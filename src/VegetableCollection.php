@@ -2,7 +2,11 @@
 
 namespace AwesomePhpCode\IteratorPatternInDepth;
 
-class VegetableCollection
+use AwesomePhpCode\IteratorPatternInDepth\Contracts\VegetableCollectionAggregate;
+use AwesomePhpCode\IteratorPatternInDepth\Contracts\VegetableIterator;
+use AwesomePhpCode\IteratorPatternInDepth\Iterators\ColorIterator;
+
+class VegetableCollection implements VegetableCollectionAggregate
 {
     /**
      * @var Vegetable[]
@@ -22,5 +26,10 @@ class VegetableCollection
     public function addVegetableStack(array $vegetables)
     {
         array_map('self::addVegetable', $vegetables);
+    }
+
+    public function getIterator(): VegetableIterator
+    {
+        return new ColorIterator($this, 'purple');
     }
 }
