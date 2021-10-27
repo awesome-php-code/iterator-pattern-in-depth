@@ -5,6 +5,7 @@ namespace AwesomePhpCode\IteratorPatternInDepth;
 use AwesomePhpCode\IteratorPatternInDepth\Contracts\VegetableCollectionAggregate;
 use AwesomePhpCode\IteratorPatternInDepth\Contracts\VegetableIterator;
 use AwesomePhpCode\IteratorPatternInDepth\Iterators\ColorIterator;
+use AwesomePhpCode\IteratorPatternInDepth\Iterators\SizeIterator;
 
 class VegetableCollection implements VegetableCollectionAggregate
 {
@@ -28,8 +29,13 @@ class VegetableCollection implements VegetableCollectionAggregate
         array_map('self::addVegetable', $vegetables);
     }
 
-    public function getIterator(): VegetableIterator
+    public function getIteratorByColor(): VegetableIterator
     {
         return new ColorIterator($this, 'purple');
+    }
+
+    public function getIteratorBySize(): VegetableIterator
+    {
+        return new SizeIterator($this);
     }
 }

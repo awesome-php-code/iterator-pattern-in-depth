@@ -2,7 +2,8 @@
 
 namespace AwesomePhpCode\IteratorPatternInDepth\Contracts;
 
-interface VegetableCollectionAggregate extends \IteratorAggregate
+interface VegetableCollectionAggregate
 {
-    public function getIterator(): VegetableIterator;
+    public function getIteratorByColor(): VegetableIterator;
+    public function getIteratorBySize(): VegetableIterator;
 }
