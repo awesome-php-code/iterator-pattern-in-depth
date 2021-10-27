@@ -59,6 +59,10 @@ Take in account the following list of vegetables to generate unit tests.
 some contracts to implement this pattern. The main idea of the iterator pattern is separation of concerns, the primary responsibility for collections
 is to store objects!, not traverse it!.
 
+So, we need to create a collection class to store all vegetable objects, and independent classes to traverse this collection. In our case
+we need two iterators to traverse objects. For consistency, we need two interfaces to standardize the way a collection is traversed
+and the way an iterator is returned inside a collection.
+
 :large_blue_diamond: Step 1: We need to declare the **Iterator interface**. This interface is intended to define some
 behaviour to all iterators. In PHP most of the problems can be solved through the built-in `\Iterator` interface.
 This contract defines the following operations to traverse collections.
@@ -84,7 +88,7 @@ interface Iterator extends Traversable {
 Is a good practice to extend this interface to force the current object type. In our case we need to return the `Vegetable` type.
 
 ```php
-interface RuleIterator extends \Iterator
+interface VegetableIterator extends \Iterator
 {
     public function current(): Vegetable;
 }
@@ -93,4 +97,40 @@ interface RuleIterator extends \Iterator
 :large_blue_diamond: Step 2: We need to declare the **Iterable Collection interface**. This interface must be implemented
 by the collection component. Again, In PHP most of the problems can be solved through the built-in `\IteratorAggregate` interface.
 
-...
+```php
+interface IteratorAggregate extends Traversable {
+    public function getIterator();
+}
+```
+
+However, this class is more useful when we need to retrieve just one iterator. For this example we need two iterators, so we can use
+our own implementation.
+
+```php
+interface VegetableCollectionAggregate
+{
+    public function getIteratorByColor(): VegetableIterator;
+    public function getIteratorBySize(): VegetableIterator;
+}
+```
+
+Observe these methods must return the `VegetableIterator` type.
+
+:large_blue_diamond: Step 3: Of course, we need specific implementations for these interfaces. We need a `VegetableCollection` to store our `Vegetable` objects and
+our own iterators like `ColorIterator` and `SizeIterator`. Let's start with the color iterator.
+
+Feel free to deep inside the code to check the [Vegetable](https://github.com/awesome-php-code/iterator-pattern-in-depth/blob/main/src/Vegetable.php) and
+[VegetableCollection](https://github.com/awesome-php-code/iterator-pattern-in-depth/blob/main/src/VegetableCollection.php) classes. 
+
+| Vegetable  |
+|---------------|
+| - color|
+| - size |
+| - expiration |
+| + getColor() |
+| + getSize() |
+| + getExpiration() |
+
+We need to traverse elements by purple color regardless of order.
+
+<p align="center"><img src="https://blog.pleets.org/img/articles/iterator_in_depth_purple_iterator.png" width="100%"></p>
